@@ -2,8 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window/Cursor.hpp>
 #include <SFML/Window/Keyboard.hpp>
-#include <iostream>
-#include "constants.h"
+#include "player.h"
 
 void player_move(bool left, bool right, bool up, bool down, float *player_x, float *player_y)
 {
