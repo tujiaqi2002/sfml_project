@@ -2,7 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window/Cursor.hpp>
 #include <SFML/Window/Keyboard.hpp>
-#include "player.h"
+#include "character.h"
 
 void player_move(bool left, bool right, bool up, bool down, float *player_x, float *player_y)
 {
@@ -54,22 +54,22 @@ void player_check_move(float *player_x, float *player_y)
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left) or sf::Keyboard::isKeyPressed(sf::Keyboard::A))
     {
         left = true;
-        std::cout << "the Left key was pressed" << std::endl;
+        // std::cout << "the Left key was pressed" << std::endl;
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) or sf::Keyboard::isKeyPressed(sf::Keyboard::D))
     {
         right = true;
-        std::cout << "the Right key was pressed" << std::endl;
+        // std::cout << "the Right key was pressed" << std::endl;
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up) or sf::Keyboard::isKeyPressed(sf::Keyboard::W))
     {
         up = true;
-        std::cout << "the Up key was pressed" << std::endl;
+        // std::cout << "the Up key was pressed" << std::endl;
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down) or sf::Keyboard::isKeyPressed(sf::Keyboard::S))
     {
         down = true;
-        std::cout << "the Down key was pressed" << std::endl;
+        // std::cout << "the Down key was pressed" << std::endl;
     }
 
     player_move(left, right, up, down, player_x, player_y);
@@ -101,11 +101,11 @@ int main()
                 std::cout << "new width: " << event.size.width << std::endl;
                 std::cout << "new height: " << event.size.height << std::endl;
             }
-            if (event.type == sf::Event::TextEntered)
-            {
-                if (event.text.unicode < 128)
-                    std::cout << "ASCII character typed: " << static_cast<char>(event.text.unicode) << std::endl;
-            }
+            // if (event.type == sf::Event::TextEntered)
+            // {
+            //     if (event.text.unicode < 128)
+            //         std::cout << "ASCII character typed: " << static_cast<char>(event.text.unicode) << std::endl;
+            // }
             if (event.type == sf::Event::KeyPressed)
             {
                 // The escape key was pressed
@@ -113,7 +113,7 @@ int main()
                 {
                     window.close();
                 }
-                std::cout << event.key.code << std::endl;
+                // std::cout << event.key.code << std::endl;
             }
         }
 
