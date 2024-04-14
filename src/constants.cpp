@@ -8,7 +8,4 @@ namespace Constants
     int height = 600;
 
     float mouseShapeRadius = 10.f;
-    float playerRadius = 20.f;
-
-    int playerSpeed = 5;
 }

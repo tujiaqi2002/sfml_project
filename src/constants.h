@@ -8,9 +8,6 @@ namespace Constants
     extern int height;
 
     extern float mouseShapeRadius;
-    extern float playerRadius;
-
-    extern int playerSpeed;
 }
 
 #endif // CONSTANTS_H
