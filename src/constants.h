@@ -10,6 +10,7 @@ namespace Constants
     extern float mouseShapeRadius;
 
     extern float catShapeRadius;
+    extern float fishShapeRadius;
 
     extern int catNum;
     extern int fishNum;

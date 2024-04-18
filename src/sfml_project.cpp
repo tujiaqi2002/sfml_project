@@ -4,10 +4,11 @@
 #include <SFML/Window/Keyboard.hpp>
 
 #include <list>
+#include <ctime> // Include <ctime> for time manipulation
 #include "cat.h"
 #include "fish.h"
 
-
+const float FishGenerationInterval = 10.0f; // Interval for fish generation in seconds
 
 int main()
 {
@@ -19,6 +20,10 @@ int main()
 
     sf::RenderWindow window(sf::VideoMode(Constants::windowWidth, Constants::windowHeight), "My window");
     window.setMouseCursorVisible(false);
+
+    sf::Clock clock; // Create a clock to measure time
+
+    float elapsedTime = 0.0f; // Initialize elapsed time
 
     while (window.isOpen())
     {
@@ -52,9 +57,27 @@ int main()
                     catNewShape.setFillColor(sf::Color(0, 0, 0));
 
                     catList.push_back(catNewShape);
-                    
                 }
             }
+        }
+
+        // Update elapsed time
+        elapsedTime += clock.restart().asSeconds();
+
+        // If elapsed time exceeds fish generation interval, generate fish
+        if (elapsedTime >= FishGenerationInterval)
+        {
+            Fish newFish(Constants::fishNum); // Assuming Fish class has a constructor
+            sf::CircleShape fishShape(Constants::fishShapeRadius);
+
+            // Set fish position and color, then add to the list
+            fishShape.setPosition(newFish.x_position, newFish.y_position);
+            fishShape.setFillColor(sf::Color::Blue); // Assuming blue color for fish
+
+            fishList.push_back(fishShape);
+
+            // Reset elapsed time
+            elapsedTime = 0.0f;
         }
 
         window.clear(sf::Color::White);
@@ -72,6 +95,11 @@ int main()
         for (const auto &catShape : catList)
         {
             window.draw(catShape);
+        }
+
+        for (const auto &fishShape : fishList)
+        {
+            window.draw(fishShape);
         }
 
         // end the current frame

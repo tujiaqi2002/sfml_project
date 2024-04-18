@@ -8,7 +8,9 @@ namespace Constants
     int windowHeight = 800;
 
     float mouseShapeRadius = 10.f;
+
     float catShapeRadius = 10.f;
+    float fishShapeRadius = 10.f;
 
     int catNum = 0;
     int fishNum = 0;
