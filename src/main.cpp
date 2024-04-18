@@ -2,14 +2,23 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window/Cursor.hpp>
 #include <SFML/Window/Keyboard.hpp>
+
+#include <list>
 #include "cat.h"
+#include "fish.h"
+
 
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(Constants::width, Constants::height), "My window");
-    window.setMouseCursorVisible(false);
+    int numCats = Constants::catNum; // Assuming Constants::catNum is defined somewhere
+    int numFish = Constants::fishNum;
 
+    std::list<sf::CircleShape> catList;
+    std::list<sf::CircleShape> fishList;
+
+    sf::RenderWindow window(sf::VideoMode(Constants::windowWidth, Constants::windowHeight), "My window");
+    window.setMouseCursorVisible(false);
 
     while (window.isOpen())
     {
@@ -33,10 +42,20 @@ int main()
                 {
                     window.close();
                 }
-                // std::cout << event.key.code << std::endl;
+                if (event.key.code == sf::Keyboard::N)
+                {
+                    Cat catNew(Constants::catNum);
+
+                    sf::CircleShape catNewShape(Constants::catShapeRadius);
+
+                    catNewShape.setPosition(catNew.x_position, catNew.y_position);
+                    catNewShape.setFillColor(sf::Color(0, 0, 0));
+
+                    catList.push_back(catNewShape);
+                    
+                }
             }
         }
-
 
         window.clear(sf::Color::White);
 
@@ -50,6 +69,10 @@ int main()
 
         window.draw(mouseShape);
 
+        for (const auto &catShape : catList)
+        {
+            window.draw(catShape);
+        }
 
         // end the current frame
         window.display();

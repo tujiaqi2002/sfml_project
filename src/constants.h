@@ -4,10 +4,15 @@
 
 namespace Constants
 {
-    extern int width;
-    extern int height;
+    extern int windowWidth;
+    extern int windowHeight;
 
     extern float mouseShapeRadius;
+
+    extern float catShapeRadius;
+
+    extern int catNum;
+    extern int fishNum;
 }
 
 #endif // CONSTANTS_H

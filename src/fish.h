@@ -1,21 +1,21 @@
-#ifndef Cat_H
-#define Cat_H
+#ifndef Fish_H
+#define Fish_H
 
 #include "constants.h"
 #include <string>
 #include <iostream>
 
-class Cat
+class Fish
 {
 public:
-    int catId;
+    int fishId;
     float x_position;
     float y_position;
 
-    std::string catName;
+    std::string fishName;
     
 
-    Cat(int catId);
+    Fish(int fishId);
 };
 
 #endif // Cat_H
