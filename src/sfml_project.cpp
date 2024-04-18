@@ -8,7 +8,7 @@
 #include "cat.h"
 #include "fish.h"
 
-const float FishGenerationInterval = 10.0f; // Interval for fish generation in seconds
+const float FishGenerationInterval = 0.5f; // Interval for fish generation in seconds
 
 int main()
 {
@@ -16,7 +16,7 @@ int main()
     int numFish = Constants::fishNum;
 
     std::list<sf::CircleShape> catList;
-    std::list<sf::CircleShape> fishList;
+    std::list<sf::Sprite> fishList; // Use sf::Sprite instead of sf::CircleShape
 
     sf::RenderWindow window(sf::VideoMode(Constants::windowWidth, Constants::windowHeight), "My window");
     window.setMouseCursorVisible(false);
@@ -24,6 +24,14 @@ int main()
     sf::Clock clock; // Create a clock to measure time
 
     float elapsedTime = 0.0f; // Initialize elapsed time
+
+    // Load fish texture from file
+    sf::Texture fishTexture;
+    if (!fishTexture.loadFromFile("src/fish.png")) // Path to your fish image
+    {
+        // Error handling if the texture fails to load
+        return EXIT_FAILURE;
+    }
 
     while (window.isOpen())
     {
@@ -68,13 +76,13 @@ int main()
         if (elapsedTime >= FishGenerationInterval)
         {
             Fish newFish(Constants::fishNum); // Assuming Fish class has a constructor
-            sf::CircleShape fishShape(Constants::fishShapeRadius);
+            sf::Sprite fishSprite; // Use sf::Sprite instead of sf::CircleShape
 
-            // Set fish position and color, then add to the list
-            fishShape.setPosition(newFish.x_position, newFish.y_position);
-            fishShape.setFillColor(sf::Color::Blue); // Assuming blue color for fish
+            // Set fish position, texture, and add to the list
+            fishSprite.setPosition(newFish.x_position, newFish.y_position);
+            fishSprite.setTexture(fishTexture); // Set the texture
 
-            fishList.push_back(fishShape);
+            fishList.push_back(fishSprite);
 
             // Reset elapsed time
             elapsedTime = 0.0f;
@@ -97,9 +105,9 @@ int main()
             window.draw(catShape);
         }
 
-        for (const auto &fishShape : fishList)
+        for (const auto &fishSprite : fishList) // Iterate through fish sprites
         {
-            window.draw(fishShape);
+            window.draw(fishSprite); // Draw fish sprites instead of shapes
         }
 
         // end the current frame
