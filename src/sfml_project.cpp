@@ -5,18 +5,25 @@
 
 #include <list>
 #include <ctime> // Include <ctime> for time manipulation
+#include <cmath> // Include <cmath> for mathematical functions
 #include "cat.h"
 #include "fish.h"
 
-const float FishGenerationInterval = 0.5f; // Interval for fish generation in seconds
+const float FishGenerationInterval = 0.1f; // Interval for fish generation in seconds
+const float CatSpeed = 1.0f; // Speed of the cat in pixels per second
+
+// Function to calculate distance between two points
+float distance(sf::Vector2f p1, sf::Vector2f p2) {
+    return std::sqrt((p1.x - p2.x) * (p1.x - p2.x) + (p1.y - p2.y) * (p1.y - p2.y));
+}
 
 int main()
 {
     int numCats = Constants::catNum; // Assuming Constants::catNum is defined somewhere
     int numFish = Constants::fishNum;
 
-    std::list<sf::CircleShape> catList;
-    std::list<sf::Sprite> fishList; // Use sf::Sprite instead of sf::CircleShape
+    std::list<sf::Sprite> catList;
+    std::list<sf::Sprite> fishList;
 
     sf::RenderWindow window(sf::VideoMode(Constants::windowWidth, Constants::windowHeight), "My window");
     window.setMouseCursorVisible(false);
@@ -28,6 +35,14 @@ int main()
     // Load fish texture from file
     sf::Texture fishTexture;
     if (!fishTexture.loadFromFile("src/fish.png")) // Path to your fish image
+    {
+        // Error handling if the texture fails to load
+        return EXIT_FAILURE;
+    }
+
+    // Load cat texture from file
+    sf::Texture catTexture;
+    if (!catTexture.loadFromFile("src/cat.jpeg")) // Path to your cat image
     {
         // Error handling if the texture fails to load
         return EXIT_FAILURE;
@@ -57,14 +72,13 @@ int main()
                 }
                 if (event.key.code == sf::Keyboard::N)
                 {
-                    Cat catNew(Constants::catNum);
+                    sf::Sprite catSprite; // Create a new cat sprite
+                    catSprite.setTexture(catTexture); // Set the texture
 
-                    sf::CircleShape catNewShape(Constants::catShapeRadius);
+                    // Set the initial position of the cat
+                    catSprite.setPosition(Constants::windowWidth / 2, Constants::windowHeight / 2);
 
-                    catNewShape.setPosition(catNew.x_position, catNew.y_position);
-                    catNewShape.setFillColor(sf::Color(0, 0, 0));
-
-                    catList.push_back(catNewShape);
+                    catList.push_back(catSprite);
                 }
             }
         }
@@ -100,9 +114,51 @@ int main()
 
         window.draw(mouseShape);
 
-        for (const auto &catShape : catList)
+        // Iterate through each cat
+        for (auto &catSprite : catList)
         {
-            window.draw(catShape);
+            // Find the closest fish to the cat
+            sf::Vector2f catPosition = catSprite.getPosition();
+            sf::Vector2f closestFishPosition;
+            float minDistance = std::numeric_limits<float>::max();
+
+            // Iterate through each fish to find the closest one
+            for (auto it = fishList.begin(); it != fishList.end(); )
+            {
+                sf::Vector2f fishPosition = it->getPosition();
+                float dist = distance(catPosition, fishPosition);
+
+                if (dist < minDistance)
+                {
+                    minDistance = dist;
+                    closestFishPosition = fishPosition;
+                }
+
+                // Check if the cat is very close to the fish
+                if (dist < 10.0f) // Adjust this value as needed
+                {
+                    it = fishList.erase(it); // Remove the fish
+                }
+                else
+                {
+                    ++it;
+                }
+            }
+
+            // Move the cat towards the closest fish
+            sf::Vector2f direction = closestFishPosition - catPosition;
+            float magnitude = std::sqrt(direction.x * direction.x + direction.y * direction.y);
+            direction /= magnitude; // Normalize the direction vector
+
+            float moveDistance = std::min(CatSpeed, magnitude); // Limit movement to the distance to the fish
+
+            catSprite.move(direction * moveDistance); // Move the cat
+
+            // Set the scale of the cat sprite to change its size
+            float scaleFactor = 0.1f; // Change this value to adjust the size
+            catSprite.setScale(scaleFactor, scaleFactor);
+
+            window.draw(catSprite); // Draw the cat sprite
         }
 
         for (const auto &fishSprite : fishList) // Iterate through fish sprites
