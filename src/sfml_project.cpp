@@ -16,6 +16,7 @@ int main()
     int numFish = Constants::fishNum;
 
     std::list<sf::CircleShape> catList;
+    std::list<Cat> cats;
     std::list<sf::Sprite> fishList; // Use sf::Sprite instead of sf::CircleShape
 
     sf::RenderWindow window(sf::VideoMode(Constants::windowWidth, Constants::windowHeight), "My window");
@@ -33,12 +34,17 @@ int main()
         return EXIT_FAILURE;
     }
 
+    const float ballRadius = 20.0f;
+    sf::Vector2f screenSize(window.getSize().x, window.getSize().y);
+    //Cat catBounce(ballRadius, screenSize);
+
     while (window.isOpen())
     {
         // check all the window's events that were triggered since the last iteration of the loop
         sf::Event event;
         while (window.pollEvent(event))
         {
+            
             // "close requested" event: we close the window
             if (event.type == sf::Event::Closed)
                 window.close();
@@ -57,14 +63,17 @@ int main()
                 }
                 if (event.key.code == sf::Keyboard::N)
                 {
-                    Cat catNew(Constants::catNum);
+                    //Cat catNew(Constants::catNum);
+                    
 
-                    sf::CircleShape catNewShape(Constants::catShapeRadius);
+                    //sf::CircleShape catNewShape(Constants::catShapeRadius);
 
-                    catNewShape.setPosition(catNew.x_position, catNew.y_position);
-                    catNewShape.setFillColor(sf::Color(0, 0, 0));
+                    //catNewShape.setPosition(catNew.x_position, catNew.y_position);
+                    //catNewShape.setFillColor(sf::Color(0, 0, 0));
 
-                    catList.push_back(catNewShape);
+                    //catList.push_back(catNewShape);
+                    Cat catBounce(ballRadius, screenSize);
+                    cats.push_back(catBounce);
                 }
             }
         }
@@ -99,6 +108,12 @@ int main()
         mouseShape.setFillColor(sf::Color(0, 0, 0));
 
         window.draw(mouseShape);
+        float deltaTime = clock.restart().asSeconds();
+        for (auto& cat : cats) {
+            cat.update(deltaTime);
+            cat.draw(window);
+        }
+        
 
         for (const auto &catShape : catList)
         {

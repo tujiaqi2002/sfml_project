@@ -2,3 +2,11 @@ bin
 .DS_Store
 /.vscode
 Makefile
+x64/
+sfml_project_sln/
+packages/
+.vs/
+packages.config
+/.vcxproj
+sfml_project_sln.*
+
