@@ -14,4 +14,8 @@ namespace Constants
 
     int catNum = 0;
     int fishNum = 0;
+
+    float FishGenerationInterval = 0.5; // Interval for fish generation in seconds
+    
+     float CatSpeed = 0.06f; // Speed of the cat in pixels per frame
 }

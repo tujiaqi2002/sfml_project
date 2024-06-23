@@ -12,6 +12,8 @@ public:
     float x_position;
     float y_position;
 
+    int targetFishId;
+
     std::string catName;
     
 

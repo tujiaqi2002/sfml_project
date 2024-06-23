@@ -14,6 +14,10 @@ namespace Constants
 
     extern int catNum;
     extern int fishNum;
+
+    extern float FishGenerationInterval; // Interval for fish generation in seconds
+
+    extern float CatSpeed; // Speed of the cat in pixels per second
 }
 
 #endif // CONSTANTS_H
